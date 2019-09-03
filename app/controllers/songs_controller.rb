@@ -15,13 +15,14 @@ class SongsController < ApplicationController
     @song= Song.find(params[:id])
  
   end
+ # this create method allows the user to pass in the name of the artist and name of the genre instead of passing in ids. 
 
   def create
  
-   a = song_params(:artist_id)
-   g = song_params(:genre_id)
-    @artist = Artist.find_or_create_by(name: a[:artist_id])
-    @genre = Genre.find_or_create_by(name: g[:genre_id])
+   artist = song_params(:artist_id)
+   genre = song_params(:genre_id)
+    @artist = Artist.find_or_create_by(name: artist[:artist_id])
+    @genre = Genre.find_or_create_by(name: genre[:genre_id])
     @song = Song.create(song_params(:name))
     @song.artist = @artist
     @song.genre = @genre
@@ -41,4 +42,24 @@ class SongsController < ApplicationController
   def song_params(*args)
     params.require(:song).permit(*args)
   end
+
+ # These methods would pass the tests but require ids be passed in.
+  # def create
+  #   @song = Song.new(song_params)
+  #   @song.save
+  #   redirect_to song_path(@song)
+  # end
+
+
+  # def update
+  #   @song = Song.find(params[:id])
+  #   @song.update(song_params)
+  #   redirect_to song_path(@song)
+  # end
+
+  # private
+
+  #   def song_params
+  #     params.require(:song).permit(:name, :artist_id, :genre_id)
+  #   end
 end
